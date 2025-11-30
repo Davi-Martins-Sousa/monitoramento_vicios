@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meus Vícios - HabitFlow</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="habits-header">
+      <h1>Meus Vícios</h1>
+      <div class="profile-menu" id="profileMenu">
+        <button class="icon-btn" id="profileBtn">⚙️</button>
+        <div class="profile-info" id="dropdownMenu">
+          <div class="profile-item" id="username">Usuário</div>
+          <div class="profile-item" id="settings">Configurações</div>
+          <div class="profile-item" id="logout">Sair</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="add-habits-cards">
+      <div class="add-habit-card" id="addHabitCard1">
+        <i>🚬</i>
+        <span>Adicione seu vício</span>
+      </div>
+      <div class="add-habit-card" id="addHabitCard2">
+        <i>🚬</i>
+        <span>Adicione seu vício</span>
+      </div>
+      <div class="add-habit-card" id="addHabitCard3">
+        <i>🚬</i>
+        <span>Adicione seu vício</span>
+      </div>
+    </div>
+
+    <div class="habits-container">
+      <ul id="viciosList">
+        <!-- Os vícios serão carregados aqui via JavaScript -->
+      </ul>
+
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <img
+          src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'><path d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z'/></svg>"
+          alt="Nenhum vício">
+        <h3>Nenhum vício monitorado</h3>
+        <p>Comece monitorando seu primeiro vício!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para adicionar vício -->
+  <div class="modal" id="addHabitModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Monitorar Novo Vício</h2>
+        <button class="close-modal" id="closeAddHabitModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="habitName">Nome do Vício</label>
+          <input type="text" id="habitName" class="form-control" placeholder="Ex: Fumar, Jogar, Comer doces">
+        </div>
+        <div class="form-group">
+          <label for="habitType">Nível de Dependência</label>
+          <select id="habitType" class="form-control">
+            <option value="baixo">Baixo</option>
+            <option value="medio">Médio</option>
+            <option value="alto">Alto</option>
+            <option value="critico">Crítico</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="habitDescription">Descrição (opcional)</label>
+          <textarea id="habitDescription" class="form-control" placeholder="Descreva seu vício, gatilhos, situações..."
+            rows="3"></textarea>
+        </div>
+        <div class="form-group">
+          <label for="habitFrequency">Frequência Atual</label>
+          <select id="habitFrequency" class="form-control">
+            <option value="diario">Diário</option>
+            <option value="semanal">Semanal</option>
+            <option value="mensal">Mensal</option>
+            <option value="ocasional">Ocasional</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal btn-secondary" id="cancelAddHabit">Cancelar</button>
+        <button class="btn-modal btn-primary" id="saveHabit">Monitorar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de configurações -->
+  <div class="modal" id="settingsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Configurações</h2>
+        <button class="close-modal" id="closeSettingsModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="userName">Nome do Usuário</label>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="userName" class="form-control" value="Usuário">
+            <button class="btn-modal btn-primary" id="editName">Editar</button>
+          </div>
+        </div>
+        <button class="btn-modal btn-secondary" id="changePassword" style="width: 100%; margin-bottom: 10px;">Trocar
+          Senha</button>
+        <button class="btn-modal btn-danger" id="deleteAccount" style="width: 100%;">Deletar Conta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de métricas do vício -->
+  <div class="modal" id="metricsModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Métricas do Vício</h2>
+        <button class="close-modal" id="closeMetricsModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="metrics-container">
+          <div class="metric-card">
+            <h3>Progresso de Redução</h3>
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <span id="progressText">0%</span>
+          </div>
+          
+          <div class="metric-card">
+            <h3>Dias sem Recair</h3>
+            <div class="metric-value" id="daysWithoutValue">0</div>
+          </div>
+          
+          <div class="metric-card">
+            <h3>Frequência Atual</h3>
+            <div class="metric-value" id="frequencyValue">-</div>
+          </div>
+          
+          <div class="metric-card">
+            <h3>Nível de Urgência</h3>
+            <div class="metric-value" id="urgencyValue">-</div>
+          </div>
+        </div>
+        
+        <div class="metrics-actions">
+          <button class="btn-modal btn-primary" id="logRelapse">Registrar Recaída</button>
+          <button class="btn-modal btn-secondary" id="logResistance">Registrar Resistência</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/vicios.js"></script>
+</body>
+
+</html>
