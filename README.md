@@ -51,7 +51,8 @@ A documentação da API, feita com Swagger, pode ser acessada através da rota /
 
 && sudo apt install ngrok
 
-### Teste de unitade
+### Teste de unitade e integração
 ```bash
    npx mocha public/backend/routes/habito.test.js
    npx mocha public/backend/routes/usuario.test.js
+   npx mocha public/backend/routes/integration.test.js 
